@@ -1,25 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Person from './Person';
 
 function PersonController() {
-  const [person, setPerson] = useState(null);
+  const [people, setPeople] = useState([]);
 
-  const getPerson = async () => {
-    const response = await fetch('https://www.randomuser.me/api?results=1');
+  // Function to fetch random people
+  const getPeople = async (numberOfPeople) => {
+    const response = await fetch(`https://www.randomuser.me/api?results=${numberOfPeople}`);
     const data = await response.json();
-    const personData = {
-      first_name: data.results[0].name.first,
-      last_name: data.results[0].name.last,
-      email: data.results[0].email,
-    };
-    setPerson(personData);
+
+    // Prepare the data to only include the required fields
+    const peopleData = data.results.map((person) => ({
+      first_name: person.name.first,
+      last_name: person.name.last,
+      email: person.email,
+    }));
+
+    setPeople(peopleData);
   };
 
-  useEffect(() => {
-    getPerson();
-  }, []);
+  return (
+    <div>
+      <button onClick={() => getPeople(1)}>get 1 Random Person</button>
+      <button onClick={() => getPeople(10)}>get 10 Random People</button>
 
-  return <Person person={person} />;
+      {people.length > 0 ? (
+        people.map((person, index) => <Person key={index} person={person} />)
+      ) : (
+        <p>No people to show. Click a button to fetch data.</p>
+      )}
+    </div>
+  );
 }
 
 export default PersonController;
