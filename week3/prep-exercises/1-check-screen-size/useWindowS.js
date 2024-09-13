@@ -16,6 +16,7 @@ function useWindowSize() {
       });
     };
 
+    // Add event listener
     window.addEventListener('resize', handleResize);
 
     // Clean up the event listener
