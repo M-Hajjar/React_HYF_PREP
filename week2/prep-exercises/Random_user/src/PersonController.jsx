@@ -4,12 +4,10 @@ import Person from './Person';
 function PersonController() {
   const [people, setPeople] = useState([]);
 
-  // Function to fetch random people
   const getPeople = async (numberOfPeople) => {
     const response = await fetch(`https://www.randomuser.me/api?results=${numberOfPeople}`);
     const data = await response.json();
 
-    // Prepare the data to only include the required fields
     const peopleData = data.results.map((person) => ({
       first_name: person.name.first,
       last_name: person.name.last,
@@ -27,7 +25,7 @@ function PersonController() {
       {people.length > 0 ? (
         people.map((person, index) => <Person key={index} person={person} />)
       ) : (
-        <p>No people to show. Click a button to fetch data.</p>
+        <p>No people to show. Click a button to get data.</p>
       )}
     </div>
   );
